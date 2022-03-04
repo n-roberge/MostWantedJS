@@ -20,6 +20,15 @@ function app(people){
          Can also select "restart" or "quit".
          (example one criteria - eycolor brown)
          (example multiple criteria - eycolor brown;gender female)`) // TODO: search by traits
+
+      // TODO: search by traits
+      //TODO: returns the first result at the moment due to person being person[0]
+      searchResults = searchByEyeColor(people); //Nick - added trait functions
+      // searchResults = searchByOccupation(people);
+      // searchResults = searchByEyeColor(people);
+      // searchResults = searchByDOB(people);
+      // searchResults = searchByHeight(people);
+      // searchResults = searchByWeight(people);
       break;
       default:
     app(people); // restart app
@@ -39,10 +48,9 @@ function mainMenu(person, people){
     alert("Could not find that individual.");
     return app(people); // restart
   }
-
-
-//TODO fix display option
+  
   person = person[0] // Nick - added to access person object
+  
   let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
   switch(displayOption){
@@ -85,17 +93,101 @@ function searchByName(people){
       return false;
     }
   })
-  // TODO: find the person single person object using the name they entered.
+  
   return foundPerson;
 }
 
 //unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
 function searchByEyeColor(people){
+  let eyeColor = promptFor("What is the person's eyecolor?", autoValid);
 
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.eyeColor).toLowerCase() === eyeColor){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
 }
 
 //TODO: add other trait filter functions here.
+function searchByOccupation(people){
+  let occupation = promptFor("What is the person's occupation?", autoValid);
 
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.occupation).toLowerCase() === occupation){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
+}
+
+function searchByGender(people){
+  let gender = promptFor("What is the person's gender?", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.gender).toLowerCase() === gender){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
+}
+
+function searchByDOB(people){
+  let dob = promptFor("What is the person's date of birth (M/D/Y)?", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.dob).toLowerCase() === dob){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
+}
+
+function searchByHeight(people){
+  let height = promptFor("What is the person's height in inches?", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.height).toLowerCase() === height){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
+}
+
+function searchByWeight(people){
+  let weight = promptFor("What is the person's weight?", autoValid);
+
+  let foundPerson = people.filter(function(potentialMatch){
+    if((potentialMatch.weight).toLowerCase() === weight){
+      return true;
+    }
+    else{
+      return false;
+    }
+  })
+  
+  return foundPerson;
+}
 
 
 //#endregion
@@ -122,8 +214,6 @@ function displayPerson(person){
 }
 
 //#endregion
-
-
 
 //Validation functions.
 //Functions to validate user input.
