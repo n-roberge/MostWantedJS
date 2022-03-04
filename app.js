@@ -15,7 +15,12 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no':
-      // TODO: search by traits
+      alert(
+        `Please type in search criteria without spaces then value.
+         Seperate multiple criteria by a semicolon (no spaces around semicolon).
+         Can also select "restart" or "quit".
+         (example one criteria - eycolor brown)
+         (example multiple criteria - eycolor brown;gender female)`) // TODO: search by traits
       break;
       default:
     app(people); // restart app
