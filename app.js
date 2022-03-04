@@ -5,7 +5,6 @@
 //Used for the overall flow of the application.
 /////////////////////////////////////////////////////////////////
 //#region 
-
 // app is the function called to start the entire application
 function app(people){
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
@@ -36,6 +35,9 @@ function mainMenu(person, people){
     return app(people); // restart
   }
 
+
+//TODO fix display option
+  person = person[0] // Nick - added to access person object
   let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
 
   switch(displayOption){
@@ -71,7 +73,7 @@ function searchByName(people){
   let lastName = promptFor("What is the person's last name?", autoValid);
 
   let foundPerson = people.filter(function(potentialMatch){
-    if(potentialMatch.firstName === firstName && potentialMatch.lastName === lastName){
+    if((potentialMatch.firstName).toLowerCase() === firstName && (potentialMatch.lastName).toLowerCase() === lastName){
       return true;
     }
     else{
