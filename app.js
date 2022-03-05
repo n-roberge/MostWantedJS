@@ -41,6 +41,7 @@ function app(people){
 
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
+  let criteriaMatch = [];
 
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
@@ -49,29 +50,44 @@ function mainMenu(person, people){
     return app(people); // restart
   }
   
-  person = person[0] // Nick - added to access person object
-  
-  let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+  ///Nick - added if loop to check if there is one or more people found, if more than one then display a list of them
+  if (person.length === 1){
 
-  switch(displayOption){
-    case "info":
-    // TODO: get person's info
-    displayPerson(person);
-    break;
-    case "family":
-    // TODO: get person's family
-    break;
-    case "descendants":
-    // TODO: get person's descendants
-    break;
-    case "restart":
-    app(people); // restart
-    break;
-    case "quit":
-    return; // stop execution
-    default:
-    return mainMenu(person, people); // ask again
+    person = person[0] // Nick - added to access person object
+    
+    let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+
+    switch(displayOption){
+      case "info":
+      // TODO: get person's info
+      displayPerson(person);
+      break;
+      case "family":
+      // TODO: get person's family
+      break;
+      case "descendants":
+      // TODO: get person's descendants
+      break;
+      case "restart":
+      app(people); // restart
+      break;
+      case "quit":
+      return; // stop execution
+      default:
+      return mainMenu(person, people); // ask again
+    }
   }
+
+  else{
+    for(let i in person){
+      let fullName = person[i].firstName + " " +person[i].lastName
+      criteriaMatch.push((fullName))
+    }
+    let results = (JSON.stringify(criteriaMatch))
+
+    alert("The following people meet the criteria: \n\n" + results.split(',').join("\n"));
+  }
+
 }
 
 //#endregion
