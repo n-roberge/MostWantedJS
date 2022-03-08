@@ -66,6 +66,7 @@ function mainMenu(person, people){
       break;
       case "descendants":
       // TODO: get person's descendants
+      displayDescendants(person, people);
       break;
       case "restart":
       app(people); // restart
@@ -240,7 +241,40 @@ function displayPerson(person){ //Earl - Added to display person of choice infor
   app(people);
 }
 
+function displayDescendants(person, people) { //Earl - Added to display descendants of the person of choice
+  let descendants = locateDescendants(person, people);
+  if (descendants.length === 0) {
+    descendants = "Descendants are not shown in data set."
+  }
+  alert(descendants);
+  app(people);
+}
 
+function locateDescendants(person, people) { //Earl - Added to locate descendants/addition of grandchildren 
+  let decendants = getDescendants(person, people);
+  let personDescendants = " ";
+  for (let index = 0; index < decendants.length; index++) {
+    personDescendants = personDescendants + decendants[index].firstName + " " + decendants[index].lastName + " ";
+    if (index >= 0) {
+      let grandKids = locateDescendants(decendants[index], people);
+      personDescendants = personDescendants + grandKids;
+    }
+  }
+  return personDescendants;
+}
+
+function getDescendants(person, people) { //Earl - Added to access descendant object by person.id
+  let descendants = [];
+  descendants = people.filter(function(potentialMatch) {
+    if (potentialMatch.parents.length === 0) {
+      return false;
+    }
+    else if (potentialMatch.parents[0]=== person.id || potentialMatch.parents[1] === person.id) {
+      return true;
+    }
+  });
+  return descendants;
+}
 //#endregion
 
 //Validation functions.
