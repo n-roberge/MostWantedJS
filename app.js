@@ -18,8 +18,7 @@ function app(people){
         `Please type in search criteria without spaces then value.
          Seperate multiple criteria by a semicolon (no spaces around semicolon).
          Can also select "restart" or "quit".
-         (example one criteria - eycolor brown)
-         (example multiple criteria - eycolor brown;gender female)`) // TODO: search by traits
+         (example one criteria - eyecolor | brown)`) // TODO: search by traits
 
       // TODO: search by traits
       //TODO: returns the first result at the moment due to person being person[0]
@@ -221,7 +220,7 @@ function displayPeople(people){
   }).join("\n"));
 }
 
-function displayPerson(person){
+function displayPerson(person){ //Earl - Added to display person of choice information
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
