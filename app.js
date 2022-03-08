@@ -9,29 +9,29 @@
 function app(people){
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
+  let results;
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
       break;
-    case 'no':
-      alert(
-        `Please type in search criteria without spaces then value.
-         Seperate multiple criteria by a semicolon (no spaces around semicolon).
-         Can also select "restart" or "quit".
-         (example one criteria - eyecolor | brown)`) // TODO: search by traits
+    case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
+      let queryPrompt = prompt(`Please type in search criteria without spaces then value.
+      Seperate multiple criteria by a semicolon (no spaces around semicolon).
+      Can also select "restart" or "quit".
+      (example one criteria - eyecolor brown)
+      (example multiple criteria - eyecolor brown;gender female)`);
 
-      // TODO: search by traits
-      //TODO: returns the first result at the moment due to person being person[0]
-      searchResults = searchByEyeColor(people); //Nick - added trait functions
-      // searchResults = searchByOccupation(people);
-      // searchResults = searchByEyeColor(people);
-      // searchResults = searchByDOB(people);
-      // searchResults = searchByHeight(people);
-      // searchResults = searchByWeight(people);
+      let [traitSearch,traitValue] = searchByTrait(queryPrompt);
+
+      if (traitSearch = "eyecolor"){
+        results = searchByEyeColor(people, traitValue);
+      };
+      searchResults = results;
       break;
       default:
     app(people); // restart app
       break;
+
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
@@ -78,13 +78,7 @@ function mainMenu(person, people){
   }
 
   else{
-    for(let i in person){
-      let fullName = person[i].firstName + " " +person[i].lastName
-      criteriaMatch.push((fullName))
-    }
-    let results = (JSON.stringify(criteriaMatch))
-
-    alert("The following people meet the criteria: \n\n" + results.split(',').join("\n"));
+    displayPeople(person);
   }
 
 }
@@ -96,7 +90,6 @@ function mainMenu(person, people){
 /////////////////////////////////////////////////////////////////
 //#region 
 
-//nearly finished function used to search through an array of people to find matching first and last name and return a SINGLE person object.
 function searchByName(people){
   let firstName = promptFor("What is the person's first name?", autoValid);
   let lastName = promptFor("What is the person's last name?", autoValid);
@@ -113,10 +106,7 @@ function searchByName(people){
   return foundPerson;
 }
 
-//unfinished function to search through an array of people to find matching eye colors. Use searchByName as reference.
-function searchByEyeColor(people){
-  let eyeColor = promptFor("What is the person's eyecolor?", autoValid);
-
+function searchByEyeColor(people, eyeColor){
   let foundPerson = people.filter(function(potentialMatch){
     if((potentialMatch.eyeColor).toLowerCase() === eyeColor){
       return true;
@@ -129,7 +119,6 @@ function searchByEyeColor(people){
   return foundPerson;
 }
 
-//TODO: add other trait filter functions here.
 function searchByOccupation(people){
   let occupation = promptFor("What is the person's occupation?", autoValid);
 
@@ -205,6 +194,20 @@ function searchByWeight(people){
   return foundPerson;
 }
 
+//TODO Working on this
+function searchByTrait(string){
+  let traitSearch ={}
+  let traitValue = {}
+  let searches = string.split(";");
+  for (let i = 0; i < searches.length; i++){
+    let searchesSplit = searches[i].split(" ");
+    for (let i = 0; i < searchesSplit.length; i+=2){
+      traitSearch = searchesSplit[i];
+      traitValue = searchesSplit[i+1];
+    };
+  }
+  return [traitSearch, traitValue];
+}
 
 //#endregion
 
