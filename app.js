@@ -1,6 +1,5 @@
 "use strict"
 
-
 //Menu functions.
 //Used for the overall flow of the application.
 /////////////////////////////////////////////////////////////////
@@ -14,11 +13,7 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-      let queryPrompt = prompt(`Please type in search criteria without spaces then value.
-      Seperate multiple criteria by a semicolon (no spaces around semicolon).
-      Can also select "restart" or "quit".
-      (example one criteria - eyecolor brown)
-      (example multiple criteria - eyecolor brown;gender female)`);
+      let queryPrompt = prompt(`Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select "restart" or "quit"\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)`);
 
       let [traitSearch,traitValue] = searchByTrait(queryPrompt);
 
@@ -29,7 +24,6 @@ function app(people){
       default:
     app(people); // restart app
       break;
-
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
@@ -37,7 +31,6 @@ function app(people){
 }
 
 //Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
-
 function filterSearch(traitSearch, traitValue, people){
   let results = people;
   let traitFilter = [];
@@ -71,7 +64,6 @@ function filterSearch(traitSearch, traitValue, people){
       traitFilter = searchByGender(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
   };
 
   return results;
@@ -81,14 +73,13 @@ function filterSearch(traitSearch, traitValue, people){
 function mainMenu(person, people){
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
-  if(!person){
+  if(!person || person.length === 0){
     alert("Could not find that individual.");
     return app(people); // restart
   }
   
   ///Nick - added if loop to check if there is one or more people found, if more than one then display a list of them
   if (person.length === 1){
-
     person = person[0] // Nick - added to access person object
     
     let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
@@ -119,7 +110,6 @@ function mainMenu(person, people){
     displayPeople(person);
     app(people);
   }
-
 }
 
 //#endregion
