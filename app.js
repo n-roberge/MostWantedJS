@@ -256,8 +256,20 @@ function displayPerson(person){ //Earl - Added to display person of choice infor
   personInfo += "Occupation: " + person.occupation + "\n";
 
   // TODO: finish getting the rest of the information to display.
-  alert(personInfo);
+alert(`Please see information below: 
+
+${personInfo}`);
   app(people);
+}
+
+function displayFamily(person, people) {
+  let parents = getParents(person, people);
+
+  let personFamily = "Parents: " + parents + "\n";
+
+  alert(personFamily);
+  app(people);
+
 }
 
 function displayDescendants(person, people) { //Earl - Added to display descendants of the person of choice
@@ -265,7 +277,9 @@ function displayDescendants(person, people) { //Earl - Added to display descenda
   if (descendants.length === 0) {
     descendants = "Descendants are not shown in data set."
   }
-  alert(descendants);
+alert(`Descendants are displayed below: 
+
+${descendants}`);
   app(people);
 }
 
@@ -293,6 +307,27 @@ function getDescendants(person, people) { //Earl - Added to access descendant ob
     }
   });
   return descendants;
+}
+
+
+function getParents(person, people) { //Earl - added function to getParents when family is requested 
+  let parents = [];
+  let personParents = [];
+  parents = people.filter(function(potentialMatch) {
+    if (potentialMatch.parents.length === 0) {
+      return false;
+    }
+    else if (person.parents[0] === potentialMatch.id || person.parents[1] === potentialMatch.id) {
+      return true;
+    }
+  });
+  for (let index = 0; index < parents.length; index++) {
+    personParents = personParents + parents[index].firstName + " " + parents[index].lastName + " ";
+
+  }
+
+  return personParents;
+
 }
 //#endregion
 
