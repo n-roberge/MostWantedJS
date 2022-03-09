@@ -9,7 +9,6 @@
 function app(people){
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
-  let results = [];
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
@@ -23,35 +22,7 @@ function app(people){
 
       let [traitSearch,traitValue] = searchByTrait(queryPrompt);
 
-      for (let i = 0; i < traitSearch.length; i++){
-        if (traitSearch[i] === "eyecolor"){
-          searchResults = (searchByEyeColor(people, traitValue[i]));
-        }
-
-        else if (traitSearch[i] === "occupation"){
-          searchResults = (searchByOccupation(people, traitValue[i]));
-        }
-
-        else if (traitSearch[i] === "DOB"){
-          searchResults = (searchByDOB(people, traitValue[i]));
-        }
-
-        else if (traitSearch[i] === "height"){
-          searchResults = (searchByHeight(people, traitValue[i]));
-        }
-
-        else if (traitSearch[i] === "weight"){
-          searchResults = (searchByWeight(people, traitValue[i]));
-        }
-        
-        else if (traitSearch[i] === "gender"){
-          searchResults = (searchByGender(people, traitValue[i]));
-        }
-      }
-
-      // if (results.length > 1){
-      //   results.filter()
-      // }
+      searchResults = filterSearch(traitSearch,traitValue,people);
       
       break;
 
@@ -65,10 +36,49 @@ function app(people){
   mainMenu(searchResults, people);
 }
 
+//Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
+
+function filterSearch(traitSearch, traitValue, people){
+  let results = people;
+  let traitFilter = [];
+  for (let i = 0; i < traitSearch.length; i++){
+    if (traitSearch[i] === "eyecolor"){
+      traitFilter = searchByEyeColor(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+
+    else if (traitSearch[i] === "occupation"){
+      traitFilter = searchByOccupation(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+
+    else if (traitSearch[i] === "dob"){
+      traitFilter = searchByDOB(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+
+    else if (traitSearch[i] === "height"){
+      traitFilter = searchByHeight(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+
+    else if (traitSearch[i] === "weight"){
+      traitFilter = searchByWeight(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+    
+    else if (traitSearch[i] === "gender"){
+      traitFilter = searchByGender(people, traitValue[i]);
+      results = results.filter(({id}) => traitFilter.some(x => x.id === id))
+    }
+
+  };
+
+  return results;
+};
+
 // Menu function to call once you find who you are looking for
 function mainMenu(person, people){
-  let criteriaMatch = [];
-
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
   if(!person){
@@ -107,6 +117,7 @@ function mainMenu(person, people){
 
   else{
     displayPeople(person);
+    app(people);
   }
 
 }
@@ -175,7 +186,7 @@ function searchByGender(people, gender){
 
 function searchByDOB(people, dob){
   let foundPerson = people.filter(function(potentialMatch){
-    if((potentialMatch.dob).toLowerCase() === dob){
+    if (potentialMatch.dob === dob){
       return true;
     }
     else{
@@ -214,7 +225,7 @@ function searchByWeight(people, weight){
   return foundPerson;
 }
 
-//TODO Working on this
+//Nick - function to read one or more searches from user input
 function searchByTrait(string){
   let traitSearch =[];
   let traitValue = [];
