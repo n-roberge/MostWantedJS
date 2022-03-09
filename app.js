@@ -15,46 +15,44 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-      // let queryPrompt = prompt(`Please type in search criteria without spaces then value.
-      // Seperate multiple criteria by a semicolon (no spaces around semicolon).
-      // Can also select "restart" or "quit".
-      // (example one criteria - eyecolor brown)
-      // (example multiple criteria - eyecolor brown;gender female)`);
+      let queryPrompt = prompt(`Please type in search criteria without spaces then value.
+      Seperate multiple criteria by a semicolon (no spaces around semicolon).
+      Can also select "restart" or "quit".
+      (example one criteria - eyecolor brown)
+      (example multiple criteria - eyecolor brown;gender female)`);
 
-      // let [traitSearch,traitValue] = searchByTrait(queryPrompt);
+      let [traitSearch,traitValue] = searchByTrait(queryPrompt);
 
-      // for (let i = 0; i < traitSearch.length; i++){
-      //   if (traitSearch[i] === "eyecolor"){
-      //     results.push(searchByEyeColor(people, traitValue[i]));
-      //   }
+      for (let i = 0; i < traitSearch.length; i++){
+        if (traitSearch[i] === "eyecolor"){
+          searchResults = (searchByEyeColor(people, traitValue[i]));
+        }
 
-      //   else if (traitSearch[i] === "occupation"){
-      //     results.push(searchByOccupation(people, traitValue[i]));
-      //   }
+        else if (traitSearch[i] === "occupation"){
+          searchResults = (searchByOccupation(people, traitValue[i]));
+        }
 
-      //   else if (traitSearch[i] === "DOB"){
-      //     results.push(searchByDOB(people, traitValue[i]));
-      //   }
+        else if (traitSearch[i] === "DOB"){
+          SearchResults = (searchByDOB(people, traitValue[i]));
+        }
 
-      //   else if (traitSearch[i] === "height"){
-      //     results.push(searchByHeight(people, traitValue[i]));
-      //   }
+        else if (traitSearch[i] === "height"){
+          SearchResults = (searchByHeight(people, traitValue[i]));
+        }
 
-      //   else if (traitSearch[i] === "weight"){
-      //     results.push(searchByWeight(people, traitValue[i]));
-      //   }
+        else if (traitSearch[i] === "weight"){
+          SearchResults = (searchByWeight(people, traitValue[i]));
+        }
         
-      //   else if (traitSearch[i] === "gender"){
-      //     results.push(searchByGender(people, traitValue[i]));
-      //   }
-      //}
+        else if (traitSearch[i] === "gender"){
+          SearchResults = (searchByGender(people, traitValue[i]));
+        }
+      }
 
       // if (results.length > 1){
       //   results.filter()
       // }
       
-      // searchResults = results;
-
       break;
 
       default:
@@ -215,19 +213,19 @@ function searchByWeight(people, weight){
 }
 
 //TODO Working on this
-// function searchByTrait(string){
-//   let traitSearch =[]
-//   let traitValue = []
-//   let searches = string.split(";");
-//   for (let i = 0; i < searches.length; i++){
-//     let searchesSplit = searches[i].split(" ");
-//     for (let i = 0; i < searchesSplit.length; i+=2){
-//       traitSearch.push(searchesSplit[i]);
-//       traitValue.push(searchesSplit[i+1]);
-//     };
-//   }
-//   return [traitSearch, traitValue];
-// }
+function searchByTrait(string){
+  let traitSearch =[];
+  let traitValue = [];
+  let searches = string.split(";");
+  for (let i = 0; i < searches.length; i++){
+    let searchesSplit = searches[i].split(" ");
+    for (let i = 0; i < searchesSplit.length; i+=2){
+      traitSearch.push(searchesSplit[i]);
+      traitValue.push(searchesSplit[i+1]);
+    };
+  }
+  return [traitSearch, traitValue];
+}
 
 //#endregion
 
