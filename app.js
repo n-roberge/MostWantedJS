@@ -33,19 +33,19 @@ function app(people){
         }
 
         else if (traitSearch[i] === "DOB"){
-          SearchResults = (searchByDOB(people, traitValue[i]));
+          searchResults = (searchByDOB(people, traitValue[i]));
         }
 
         else if (traitSearch[i] === "height"){
-          SearchResults = (searchByHeight(people, traitValue[i]));
+          searchResults = (searchByHeight(people, traitValue[i]));
         }
 
         else if (traitSearch[i] === "weight"){
-          SearchResults = (searchByWeight(people, traitValue[i]));
+          searchResults = (searchByWeight(people, traitValue[i]));
         }
         
         else if (traitSearch[i] === "gender"){
-          SearchResults = (searchByGender(people, traitValue[i]));
+          searchResults = (searchByGender(people, traitValue[i]));
         }
       }
 
@@ -187,8 +187,9 @@ function searchByDOB(people, dob){
 }
 
 function searchByHeight(people, height){
+  height = Number(height);
   let foundPerson = people.filter(function(potentialMatch){
-    if((potentialMatch.height).toLowerCase() === height){
+    if(potentialMatch.height === height){
       return true;
     }
     else{
@@ -200,8 +201,9 @@ function searchByHeight(people, height){
 }
 
 function searchByWeight(people, weight){
+  weight = Number(weight);
   let foundPerson = people.filter(function(potentialMatch){
-    if((potentialMatch.weight).toLowerCase() === weight){
+    if(potentialMatch.weight === weight){
       return true;
     }
     else{
