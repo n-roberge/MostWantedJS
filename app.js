@@ -47,7 +47,7 @@ function app(people){
       //   else if (traitSearch[i] === "gender"){
       //     results.push(searchByGender(people, traitValue[i]));
       //   }
-      }
+      //}
 
       // if (results.length > 1){
       //   results.filter()
@@ -243,7 +243,7 @@ function displayPeople(people){
   }).join("\n"));
 }
 
-function displayPerson(person){
+function displayPerson(person){ //Earl - Added to display person of choice information
   // print all of the information about a person:
   // height, weight, age, name, occupation, eye color.
   let personInfo = "First Name: " + person.firstName + "\n";
@@ -281,7 +281,6 @@ function locateDescendants(person, people) { //Earl - Added to locate descendant
   }
   return personDescendants;
 }
-
 
 function getDescendants(person, people) { //Earl - Added to access descendant object by person.id
   let descendants = [];
