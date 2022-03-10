@@ -1,6 +1,5 @@
 "use strict"
 
-
 //Menu functions.
 //Used for the overall flow of the application.
 /////////////////////////////////////////////////////////////////
@@ -11,12 +10,13 @@ function app(people){
 
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
+
   switch(searchType){
     case 'yes':
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-
+      //TODO wrap into a separate function
       let queryPrompt = promptFor("Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select 'restart' or 'quit'\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", queryPromptValid);
 
       if (queryPrompt.toLowerCase() === 'quit'){
@@ -27,13 +27,11 @@ function app(people){
         app(people);
       }
 
-
       else{
         let [traitSearch,traitValue] = searchByTrait(queryPrompt);
         searchResults = filterSearch(traitSearch, traitValue, people);
       };
 
-      
       break;
 
     default:
@@ -47,7 +45,6 @@ function app(people){
 }
 
 //Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
-
 function filterSearch(traitSearch, traitValue, people){
   let results = people;
   let traitFilter = [];
@@ -91,7 +88,7 @@ function filterSearch(traitSearch, traitValue, people){
 function mainMenu(person, people){
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
-  if(!person){
+  if(!person || person.length === 0){
     alert("Could not find that individual.");
     return app(people); // restart
   }
@@ -152,7 +149,6 @@ function searchByName(people){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -165,7 +161,6 @@ function searchByEyeColor(people, eyeColor){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -178,7 +173,6 @@ function searchByOccupation(people, occupation){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -190,8 +184,7 @@ function searchByGender(people, gender){
     else{
       return false;
     }
-  })
-  
+  }) 
   return foundPerson;
 }
 
@@ -204,7 +197,6 @@ function searchByDOB(people, dob){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -218,7 +210,6 @@ function searchByHeight(people, height){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -232,7 +223,6 @@ function searchByWeight(people, weight){
       return false;
     }
   })
-  
   return foundPerson;
 }
 
@@ -281,7 +271,6 @@ function displayPerson(person){ //Earl - Added to display person of choice infor
 alert(`Please see information below: 
 
 ${personInfo}`);
-  app(people);
 }
 
 function displayFamily(person, people) {
@@ -352,9 +341,7 @@ function getParents(person, people) { //Earl - added function to getParents when
     personParents = personParents + parents[index].firstName + " " + parents[index].lastName + " ";
 
   }
-
   return personParents;
-
 }
 
 // function getChildren(person, people) { //Earl - added function to getChildren when family is requested (Function is not operational!)
@@ -407,6 +394,7 @@ function yesNo(input){
     return true;
   }
   else{
+    alert("Please enter 'yes' or 'no'.")
     return false;
   }
 }
@@ -426,13 +414,15 @@ function autoValid(input){
 //     return false;
 //   }
 // }
-//Nick - display option prompt
+
+//Nick - display option prompt validation
 function displayOptionValid(input){
   let validInput = ['info','family','descendants','restart','quit'];
   if(validInput.includes(input.toLowerCase())){
     return true;
   }
   else{
+    alert("Please enter a valid input.")
     return false;
   }
 }
@@ -453,19 +443,13 @@ function createTraitValueArrays(people){
 function queryPromptValid(input){
   let [traitSearch,traitValue] = searchByTrait(input)
 
-  if(traitSearch.every(r => traitKeyArray.includes(r)) && traitValue.every(r => traitValueArray.includes(r))){
+  if(traitSearch.every(r => traitKeyArray.includes(r)) && traitValue.every(r => traitValueArray.includes(r)) || input === "quit" || input === "restart"){
     return true
   }
   else{
     alert("Please enter a valid input.")
     return false;
   }
-}
-
-//Unfinished validation function you can use for any of your custom validation callbacks.
-//can be used for things like eye color validation for example.
-function customValidation(input){
-  
 }
 
 //#endregion
