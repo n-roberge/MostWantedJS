@@ -1,5 +1,6 @@
 "use strict"
 
+
 //Menu functions.
 //Used for the overall flow of the application.
 /////////////////////////////////////////////////////////////////
@@ -13,7 +14,11 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-      let queryPrompt = prompt(`Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select "restart" or "quit"\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)`);
+      let queryPrompt = prompt(`Please type in search criteria without spaces then value.
+      Seperate multiple criteria by a semicolon (no spaces around semicolon).
+      Can also select "restart" or "quit".
+      (example one criteria - eyecolor brown)
+      (example multiple criteria - eyecolor brown;gender female)`);
 
       let [traitSearch,traitValue] = searchByTrait(queryPrompt);
 
@@ -24,6 +29,7 @@ function app(people){
       default:
     app(people); // restart app
       break;
+
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
@@ -31,6 +37,7 @@ function app(people){
 }
 
 //Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
+
 function filterSearch(traitSearch, traitValue, people){
   let results = people;
   let traitFilter = [];
@@ -64,6 +71,7 @@ function filterSearch(traitSearch, traitValue, people){
       traitFilter = searchByGender(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
+
   };
 
   return results;
@@ -73,13 +81,14 @@ function filterSearch(traitSearch, traitValue, people){
 function mainMenu(person, people){
   /* Here we pass in the entire person object that we found in our search, as well as the entire original dataset of people. We need people in order to find descendants and other information that the user may want. */
 
-  if(!person || person.length === 0){
+  if(!person){
     alert("Could not find that individual.");
     return app(people); // restart
   }
   
   ///Nick - added if loop to check if there is one or more people found, if more than one then display a list of them
   if (person.length === 1){
+
     person = person[0] // Nick - added to access person object
     
     let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
@@ -91,6 +100,7 @@ function mainMenu(person, people){
       break;
       case "family":
       // TODO: get person's family
+      displayFamily(person, people)
       break;
       case "descendants":
       // TODO: get person's descendants
@@ -110,6 +120,7 @@ function mainMenu(person, people){
     displayPeople(person);
     app(people);
   }
+
 }
 
 //#endregion
@@ -264,11 +275,13 @@ ${personInfo}`);
 }
 
 function displayFamily(person, people) {
-  let parents = getParents(person, people);
+  let parent = getParents(person, people);
+  // let children = getChildren(person, people); code is connected to function that is not operational
 
-  let personFamily = "Parents: " + parents + "\n";
+  let wholeFamily = "Parents: " + parent + "\n";
+  // wholeFamily = wholeFamily + "Children: " + children + "\n";
 
-  alert(personFamily);
+  alert(wholeFamily);
   app(people);
 
 }
@@ -314,14 +327,17 @@ function getDescendants(person, people) { //Earl - Added to access descendant ob
 function getParents(person, people) { //Earl - added function to getParents when family is requested 
   let parents = [];
   let personParents = [];
-  parents = people.filter(function(potentialMatch) {
-    if (potentialMatch.parents.length === 0) {
-      return false;
+    if (person.parents.length === 0) {
+      return "There are no parents located in the database ";
     }
-    else if (person.parents[0] === potentialMatch.id || person.parents[1] === potentialMatch.id) {
+    else {
+      parents = people.filter(function(potentialMatch) {
+      if (potentialMatch.id === person.parents[0] || potentialMatch.id === person.parents[1]) {
       return true;
     }
   });
+
+}
   for (let index = 0; index < parents.length; index++) {
     personParents = personParents + parents[index].firstName + " " + parents[index].lastName + " ";
 
@@ -330,6 +346,30 @@ function getParents(person, people) { //Earl - added function to getParents when
   return personParents;
 
 }
+
+// function getChildren(person, people) { //Earl - added function to getChildren when family is requested (Function is not operational!)
+//   let kids = [];
+//   let personChildren = [];
+//     if (person.parents.length === 0) {
+//       return "This person does not have children";
+//     }
+//     else {
+//       children = people.filter(function(potentialMatch) {
+//       if (potentialMatch.id === person.parents[0] || potentialMatch.id === person.parents[1]) {
+//       return true;
+//     }
+//   });
+
+// }
+//   for (let index = 0; index < kids.length; index++) {
+//     personChildren = personChildren + kids[index].firstName + " " + kids[index].lastName + " ";
+
+//   }
+
+//   return personChildren;
+
+// }
+
 //#endregion
 
 //Validation functions.
