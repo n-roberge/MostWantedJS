@@ -6,6 +6,8 @@
 //#region 
 // app is the function called to start the entire application
 function app(people){
+  createTraitValueArrays(people)
+
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
   switch(searchType){
@@ -13,16 +15,26 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-      let queryPrompt = prompt(`Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select "restart" or "quit"\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)`);
+      let queryPrompt = promptFor("Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select 'restart' or 'quit'\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", queryPromptValid);
 
-      let [traitSearch,traitValue] = searchByTrait(queryPrompt);
+      if (queryPrompt.toLowerCase() === 'quit'){
+        return;
+      }
 
-      searchResults = filterSearch(traitSearch,traitValue,people);
+      else if (queryPrompt.toLowerCase() === 'restart'){
+        app(people);
+      }
+
+      else{
+        let [traitSearch,traitValue] = searchByTrait(queryPrompt);
+        searchResults = filterSearch(traitSearch, traitValue, people);
+      };
+
       
       break;
 
-      default:
-    app(people); // restart app
+    default:
+      app(people); // restart app
       break;
   }
   
@@ -82,7 +94,7 @@ function mainMenu(person, people){
   if (person.length === 1){
     person = person[0] // Nick - added to access person object
     
-    let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", autoValid);
+    let displayOption = promptFor("Found " + person.firstName + " " + person.lastName + " . Do you want to know their 'info', 'family', or 'descendants'? Type the option you want or 'restart' or 'quit'", displayOptionValid);
 
     switch(displayOption){
       case "info":
@@ -346,7 +358,8 @@ function promptFor(question, valid){
   do{
     var response = prompt(question).trim();
     isValid = valid(response);
-  } while(response === ""  ||  isValid === false)
+  } 
+  while(response === ""  ||  isValid === false)
   return response;
 }
 
@@ -364,6 +377,51 @@ function yesNo(input){
 //this will always return true for all inputs.
 function autoValid(input){
   return true; // default validation only
+}
+
+// function nameValid(input, people){
+//   let validInput = 
+//   if(validInput.includes(input.toLowerCase())){
+//     return true;
+//   }
+//   else{
+//     return false;
+//   }
+// }
+//Nick - display option prompt
+function displayOptionValid(input){
+  let validInput = ['info','family','descendants','restart','quit'];
+  if(validInput.includes(input.toLowerCase())){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+//Nick - arrays of valid responses for traits
+let traitKeyArray = ['gender', 'dob', 'height', 'weight', 'eyecolor', 'occupation'];
+let traitValueArray = [];
+
+function createTraitValueArrays(people){
+  for (let i=0;i<people.length;i++){
+    let individualPerson = people[i]
+    traitValueArray = traitValueArray.concat(Object.values(individualPerson))
+  }
+  return(traitValueArray)
+};
+
+//Nick - multi-trait or single trait prompt validation
+function queryPromptValid(input){
+  let [traitSearch,traitValue] = searchByTrait(input)
+
+  if(traitSearch.every(r => traitKeyArray.includes(r)) && traitValue.every(r => traitValueArray.includes(r))){
+    return true
+  }
+  else{
+    alert("Please enter a valid input.")
+    return false;
+  }
 }
 
 //Unfinished validation function you can use for any of your custom validation callbacks.
