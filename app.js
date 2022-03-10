@@ -16,24 +16,19 @@ function app(people){
       searchResults = searchByName(people);
       break;
     case 'no': //Nick - added searchByTrait that breaks down the prompt into separate searches
-      //TODO wrap into a separate function
       let queryPrompt = promptFor("Please type in search criteria without spaces then value.\nSeperate multiple criteria by a semicolon (no spaces around semicolon).\n\nCan also select 'restart' or 'quit'\n\n(example one criteria - eyecolor brown)\n(example multiple criteria - eyecolor brown;gender female)", queryPromptValid);
 
       if (queryPrompt.toLowerCase() === 'quit'){
         return;
       }
-
       else if (queryPrompt.toLowerCase() === 'restart'){
         app(people);
       }
-
       else{
         let [traitSearch,traitValue] = searchByTrait(queryPrompt);
         searchResults = filterSearch(traitSearch, traitValue, people);
       };
-
       break;
-
     default:
       app(people); // restart app
       break;
@@ -42,12 +37,6 @@ function app(people){
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people);
 }
-
-//Nick - function for case: 'no' to query multi search
-// function querySearch(){
-
-// }
-
 
 //Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
 function filterSearch(traitSearch, traitValue, people){
@@ -58,34 +47,28 @@ function filterSearch(traitSearch, traitValue, people){
       traitFilter = searchByEyeColor(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
     else if (traitSearch[i] === "occupation"){
       traitFilter = searchByOccupation(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
     else if (traitSearch[i] === "dob"){
       traitFilter = searchByDOB(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
     else if (traitSearch[i] === "height"){
       traitFilter = searchByHeight(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
     else if (traitSearch[i] === "weight"){
       traitFilter = searchByWeight(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-    
+   
     else if (traitSearch[i] === "gender"){
       traitFilter = searchByGender(people, traitValue[i]);
       results = results.filter(({id}) => traitFilter.some(x => x.id === id))
     }
-
   };
-
   return results;
 };
 
@@ -127,7 +110,6 @@ function mainMenu(person, people){
       return mainMenu(person, people); // ask again
     }
   }
-
   else{
     displayPeople(person);
     app(people);
@@ -324,7 +306,6 @@ function getDescendants(person, people) { //Earl - Added to access descendant ob
   });
   return descendants;
 }
-
 
 function getParents(person, people) { //Earl - added function to getParents when family is requested 
   let parents = [];
