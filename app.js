@@ -37,12 +37,17 @@ function app(people){
     default:
       app(people); // restart app
       break;
-
   }
   
   // Call the mainMenu function ONLY after you find the SINGLE person you are looking for
   mainMenu(searchResults, people);
 }
+
+//Nick - function for case: 'no' to query multi search
+// function querySearch(){
+
+// }
+
 
 //Nick - takes the user input for multi-trait and breaks down separate searches and criteria, then filters out people by the criteria
 function filterSearch(traitSearch, traitValue, people){
@@ -127,7 +132,6 @@ function mainMenu(person, people){
     displayPeople(person);
     app(people);
   }
-
 }
 
 //#endregion
@@ -137,9 +141,9 @@ function mainMenu(person, people){
 /////////////////////////////////////////////////////////////////
 //#region 
 
-function searchByName(people){
-  let firstName = promptFor("What is the person's first name?", autoValid);
-  let lastName = promptFor("What is the person's last name?", autoValid);
+function searchByName(people){ 
+  let firstName = firstNameValid(people);
+  let lastName = lastNameValid(people);
 
   let foundPerson = people.filter(function(potentialMatch){
     if((potentialMatch.firstName).toLowerCase() === firstName && (potentialMatch.lastName).toLowerCase() === lastName){
@@ -282,7 +286,6 @@ function displayFamily(person, people) {
 
   alert(wholeFamily);
   app(people);
-
 }
 
 function displayDescendants(person, people) { //Earl - Added to display descendants of the person of choice
@@ -405,15 +408,44 @@ function autoValid(input){
   return true; // default validation only
 }
 
-// function nameValid(input, people){
-//   let validInput = 
-//   if(validInput.includes(input.toLowerCase())){
-//     return true;
-//   }
-//   else{
-//     return false;
-//   }
-// }
+//Nick - name validation that creates array of the first and last names and checks if input matches a name in database
+function firstNameValid(people){
+  let firstNameArray = [];
+  for (let i=0;i<people.length;i++){
+    firstNameArray = firstNameArray.concat(people[i]["firstName"])
+  }
+  for (let item in firstNameArray){
+    firstNameArray[item] = firstNameArray[item].toLowerCase()
+  }
+
+  let firstName = prompt("What is the person's first name?");
+
+  if(firstNameArray.includes(firstName)){
+    return firstName;
+  }
+  else{
+    alert("Invalid first name.")
+  }
+}
+
+function lastNameValid(people){
+  let lastNameArray = [];
+  for (let i=0;i<people.length;i++){
+    lastNameArray = lastNameArray.concat(people[i]["lastName"])
+  }
+  for (let item in lastNameArray){
+    lastNameArray[item] = lastNameArray[item].toLowerCase()
+  }
+
+  let lastName = prompt("What is the person's last name?");
+
+  if(lastNameArray.includes(lastName)){
+    return lastName;
+  }
+  else{
+    alert("Invalid last name.")
+  }
+}
 
 //Nick - display option prompt validation
 function displayOptionValid(input){
