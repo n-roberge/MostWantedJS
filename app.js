@@ -261,10 +261,10 @@ ${personInfo}`);
 
 function displayFamily(person, people) {
   let parent = getParents(person, people);
-  let children = getChildren(person, people); //code is connected to function that is not operational
+  let children = getChildren(person, people);
+  let spouse = getSpouse(person, people);//Nick - added
 
-  let wholeFamily = "Parents: " + parent + "\n" + "Children: " + children;
-  // wholeFamily = wholeFamily + "Children: " + children + "\n";
+  let wholeFamily = "Parents: " + parent + "\n" + "Children: " + children + "\n" + "Spouse: " + spouse;
 
   alert(wholeFamily);
   app(people);
@@ -345,6 +345,23 @@ function getChildren(person, people) { //Earl - added function to getChildren wh
   return personChildren;
 }
 
+function getSpouse(person, people) { 
+  let spouse = [];
+  let personSpouse = [];
+  spouse = people.filter(function(potentialMatch) {
+    if (potentialMatch.currentSpouse === person.id) {
+      return true;
+    }
+  });
+  if (spouse.length === 0){
+    return "There is no spouse located in the database"
+  }
+  else {
+    personSpouse = personSpouse + spouse[0].firstName + " " + spouse[0].lastName + " ";
+  }
+  
+  return personSpouse;
+}
 //#endregion
 
 //Validation functions.
