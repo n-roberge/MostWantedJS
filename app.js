@@ -7,8 +7,6 @@
 // app is the function called to start the entire application
 function app(people){
   createTraitValueArrays(people)
-  //TODO Test
-  createChildrenDict(people)
 
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
@@ -336,8 +334,13 @@ function getChildren(person, people) { //Earl - added function to getChildren wh
       return true;
     }
   });
-  for (let index = 0; index < kids.length; index++) {
-    personChildren = personChildren + kids[index].firstName + " " + kids[index].lastName + " ";
+  if (kids.length === 0){
+    return "There are no children located in the database"
+  }
+  else {
+    for (let index = 0; index < kids.length; index++) {
+      personChildren = personChildren + kids[index].firstName + " " + kids[index].lastName + " ";
+    }
   }
   return personChildren;
 }
