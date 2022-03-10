@@ -7,6 +7,8 @@
 // app is the function called to start the entire application
 function app(people){
   createTraitValueArrays(people)
+  //TODO Test
+  createChildrenDict(people)
 
   let searchType = promptFor("Do you know the name of the person you are looking for? Enter 'yes' or 'no'", yesNo).toLowerCase();
   let searchResults;
@@ -261,9 +263,9 @@ ${personInfo}`);
 
 function displayFamily(person, people) {
   let parent = getParents(person, people);
-  // let children = getChildren(person, people); code is connected to function that is not operational
+  let children = getChildren(person, people); //code is connected to function that is not operational
 
-  let wholeFamily = "Parents: " + parent + "\n";
+  let wholeFamily = "Parents: " + parent + "\n" + "Children: " + children;
   // wholeFamily = wholeFamily + "Children: " + children + "\n";
 
   alert(wholeFamily);
@@ -319,37 +321,26 @@ function getParents(person, people) { //Earl - added function to getParents when
       return true;
     }
   });
-
 }
   for (let index = 0; index < parents.length; index++) {
     personParents = personParents + parents[index].firstName + " " + parents[index].lastName + " ";
-
   }
   return personParents;
 }
 
-// function getChildren(person, people) { //Earl - added function to getChildren when family is requested (Function is not operational!)
-//   let kids = [];
-//   let personChildren = [];
-//     if (person.parents.length === 0) {
-//       return "This person does not have children";
-//     }
-//     else {
-//       children = people.filter(function(potentialMatch) {
-//       if (potentialMatch.id === person.parents[0] || potentialMatch.id === person.parents[1]) {
-//       return true;
-//     }
-//   });
-
-// }
-//   for (let index = 0; index < kids.length; index++) {
-//     personChildren = personChildren + kids[index].firstName + " " + kids[index].lastName + " ";
-
-//   }
-
-//   return personChildren;
-
-// }
+function getChildren(person, people) { //Earl - added function to getChildren when family is requested (Function is not operational!)
+  let kids = [];
+  let personChildren = [];
+  kids = people.filter(function(potentialMatch) {//Nick - changed the if loop
+    if (potentialMatch.parents[0] === person.id || potentialMatch.parents[1] === person.id) {
+      return true;
+    }
+  });
+  for (let index = 0; index < kids.length; index++) {
+    personChildren = personChildren + kids[index].firstName + " " + kids[index].lastName + " ";
+  }
+  return personChildren;
+}
 
 //#endregion
 
